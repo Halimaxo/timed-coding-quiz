@@ -16,7 +16,7 @@ var finishedQuiz = document.querySelector(".endContainer");
 
 var questionText = document.querySelector(".questionText");
 
-var globalIndex = 1;
+var globalIndex = 0;
 
 questionBox.style.display = "none";
 
