@@ -18,6 +18,14 @@ var questionText = document.querySelector(".questionText");
 
 var globalIndex = 0;
 
+var userInputs = document.querySelector(".userInput");
+
+var submitBttn = document.querySelector(".submitButton");
+
+var score = 0;
+
+var highestScore = [];
+
 questionBox.style.display = "none";
 
 finishedQuiz.style.display = "none";
@@ -57,6 +65,7 @@ function sendMessage() {
 }
 
 function displayQuestion(i) {
+  answerBox.innerHTML = "";
   questionText.textContent = questions[i].Text;
   questions[i].Choices.forEach(function (choice) {
     var btn = document.createElement("button");
@@ -68,12 +77,22 @@ function displayQuestion(i) {
   });
 }
 function verifyAnswer(answer) {
-  if (answer === questions[globalIndex].Correct) {
+  if (
+    answer === questions[globalIndex].Correct &&
+    globalIndex <= questions.length
+  ) {
     console.log("correct");
+    score += 5;
   }
-  if (globalIndex !== questions.length) {
-    globalIndex++;
+  globalIndex++;
+  if (globalIndex < questions.length) {
     displayQuestion(globalIndex);
+  } else {
+    console.log(globalIndex);
+    console.log("quiz finished");
+    questionBox.style.display = "none";
+    finishedQuiz.style.display = "block";
+    timeEl.style.display = "none";
   }
 }
 
@@ -83,3 +102,17 @@ startBtn.addEventListener("click", function () {
   questionBox.style.display = "block";
   displayQuestion(globalIndex);
 });
+
+function submitForm() {
+  var userInfo = {
+    name: userInputs.value,
+    score: score,
+  };
+
+  highestScore.push(userInfo);
+
+  localStorage.setItem("high scores", JSON.stringify(highestScore));
+  userInputs.value = "";
+}
+
+submitBttn.addEventListener("click", submitForm);
